@@ -1,0 +1,28 @@
+.main-wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  min-height: 10vh;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+}
+
+.task-columns-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: center;
+}
+
+.trash-wrapper {
+  display: flex;
+  flex-direction: row;
+}

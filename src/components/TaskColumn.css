@@ -1,0 +1,16 @@
+.task-column {
+  height: 30rem;
+  width: 15rem;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.task {
+  border: 1px solid black;
+  background-color: white;
+  min-width: 12rem;
+}

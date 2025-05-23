@@ -1,36 +1,68 @@
 import { DndContext } from '@dnd-kit/core';
 import TaskColumn from './TaskColumn';
-import "./ToDoList.css";
 import { useEffect, useState } from 'react';
-import AddTask from './AddTask';
+import AddTask from './TaskCreator';
+import "./ToDoList.css";
 
 const ToDoList = ({ todos }) => {
-  const [toDo, setToDo] = useState([]);
-  const [inProgress, setInProgress] = useState([]);
-  const [done, setDone] = useState([]);
-  const [isDropped, setIsDropped] = useState(false);
+  const [tasks, setTasks] = useState({
+    "to-do": [],
+    "in-progress": [],
+    "done": [],
+  });
+
+  function handleAddTask(name) {
+    const newTask = {
+      id: crypto.randomUUID(),
+      text: name,
+      status: "to-do",
+    };
+
+    setTasks(prev => ({
+      ...prev,
+      "to-do": [...prev["to-do"], newTask],
+    }));
+  }
 
   function handleDragEnd(event) {
-    if (event.over && event.over.id === 'droppable') {
-      setIsDropped(true);
+    const { active, over } = event;
+    if (!over) return;
+
+    const draggedId = active.id;
+    const newStatus = over.id;
+
+    let draggedTask = null;
+    const updated = {};
+
+    for (const [status, arr] of Object.entries(tasks)) {
+      const newArr = arr.filter(task => {
+        if (task.id === draggedId) {
+          draggedTask = { ...task, status: newStatus };
+          return false;
+        }
+        return true;
+      });
+      updated[status] = newArr;
     }
+
+    if (!draggedTask) return;
+
+    updated[newStatus] = [...updated[newStatus], draggedTask];
+    setTasks(updated);
   }
 
   useEffect(() => {
-    let todoArr = [];
-    let inProgressArr = []
-    let doneArr = [];
-    
+    const arr = {
+      "to-do": [],
+      "in-progress": [],
+      "done": [],
+    };
+
     todos.forEach((t) => {
-      if (t.status === "to-do") todoArr.push(t);
-      else if (t.status === "done") doneArr.push(t);
-      else inProgressArr.push(t);
+      arr[t.status]?.push(t);
     });
 
-    setToDo(todoArr);
-    setInProgress(inProgressArr);
-    setDone(doneArr);
-
+    setTasks(arr);
   }, [todos]);
 
   return (
@@ -41,18 +73,25 @@ const ToDoList = ({ todos }) => {
       <DndContext onDragEnd={handleDragEnd}>
         <div className="body">
           {/* TOP AREA- ADD TASK */}
-          <AddTask />
+          <AddTask handleAddTask={handleAddTask} />
           {/* CENTRAL AREA - TASK COLUMNS */}
           <div className='task-columns-wrapper'>
-            <TaskColumn name={"to-do"} tasks={toDo}/>
-            <TaskColumn name={"in-progress"} tasks={inProgress} />
-            <TaskColumn name={"done"} tasks={done} />
+            {
+              Object.entries(tasks).map(
+                ([category, status]) => (
+                  <TaskColumn
+                    key={category}
+                    name={category}
+                    tasks={status}
+                  />
+                )
+              )
+            }
           </div>
           {/* BOTTOM AREA - TRASH */}
           <div className='trash-wrapper'>
             TRASH
           </div>
-
         </div>
       </DndContext>
     </div>

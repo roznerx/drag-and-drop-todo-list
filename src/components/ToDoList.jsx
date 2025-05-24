@@ -3,6 +3,7 @@ import TaskColumn from './TaskColumn';
 import { useEffect, useState } from 'react';
 import AddTask from './TaskCreator';
 import "./ToDoList.css";
+import TaskTrash from './TaskTrash';
 
 const ToDoList = ({ todos }) => {
   const [tasks, setTasks] = useState({
@@ -24,14 +25,31 @@ const ToDoList = ({ todos }) => {
     }));
   }
 
+  function handleDeleteTask(id) {
+    const updated = {};
+
+    for (const [status, arr] of Object.entries(tasks)) {
+      console.log(updated[status])
+      updated[status] = arr.filter(task => task.id !== id);
+    }
+
+    setTasks(updated);
+  }
+
   function handleDragEnd(event) {
     const { active, over } = event;
     if (!over) return;
 
     const draggedId = active.id;
-    const newStatus = over.id;
 
+    if (over.id === 'trash') {
+      handleDeleteTask(draggedId);
+      return;
+    }
+    
+    const newStatus = over.id;
     let draggedTask = null;
+
     const updated = {};
 
     for (const [status, arr] of Object.entries(tasks)) {
@@ -67,30 +85,29 @@ const ToDoList = ({ todos }) => {
 
   return (
     <div className="main-wrapper">
-      <header className="header">
-        <h1>To-Do List</h1>
-      </header>
       <DndContext onDragEnd={handleDragEnd}>
         <div className="body">
-          {/* TOP AREA- ADD TASK */}
-          <AddTask handleAddTask={handleAddTask} />
-          {/* CENTRAL AREA - TASK COLUMNS */}
-          <div className='task-columns-wrapper'>
-            {
-              Object.entries(tasks).map(
-                ([category, status]) => (
-                  <TaskColumn
-                    key={category}
-                    name={category}
-                    tasks={status}
-                  />
+          <div className='content-wrapper'>
+            <header className="header">
+              <h1>TO DO LIST</h1>
+            </header>
+            <AddTask handleAddTask={handleAddTask} />
+            <div className='task-columns-wrapper'>
+              {
+                Object.entries(tasks).map(
+                  ([category, status]) => (
+                    <TaskColumn
+                      key={category}
+                      name={category}
+                      tasks={status}
+                    />
+                  )
                 )
-              )
-            }
-          </div>
-          {/* BOTTOM AREA - TRASH */}
-          <div className='trash-wrapper'>
-            TRASH
+              }
+            </div>
+            <div className='trash-wrapper'>
+              <TaskTrash />
+            </div>
           </div>
         </div>
       </DndContext>

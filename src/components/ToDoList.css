@@ -1,28 +1,41 @@
 .main-wrapper {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.header {
-  min-height: 10vh;
+  width: 100%;
 }
 
 .body {
   display: flex;
   flex-direction: column;
-  min-height: 90vh;
+  align-items: center;
+  gap: 2rem;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 70vw;
+  padding: 0 2rem;
+  margin: 0 auto;
+}
+
+.header {
+  font-size: 28px;
 }
 
 .task-columns-wrapper {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   align-content: center;
+  gap: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
 }
 
 .trash-wrapper {
+  margin-top: 3rem;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }

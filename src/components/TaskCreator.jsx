@@ -7,8 +7,9 @@ export default function TaskCreator({ handleAddTask  }) {
   return (
     <div className='add-wrapper'>
       <input 
+        className='task-to-add'
         type="text" 
-        value={name} 
+        value={name.toUpperCase()} 
         onChange={(e) => setName(e.target.value)} />
       <button
         className='create-btn'

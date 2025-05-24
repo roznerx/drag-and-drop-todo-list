@@ -1,5 +1,6 @@
 import { useDraggable } from '@dnd-kit/core';
 import "./Task.css";
+import expandIcon from '../assets/expand-icon.png';
 
 export default function Task({ id, text }) {
   const { 
@@ -12,13 +13,14 @@ export default function Task({ id, text }) {
   } : undefined;
 
   return (
-    <h3 className="task"
+    <div className="task"
       ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}
     >
-      {text}
-    </h3>
+      <p>{text.toUpperCase().trim()}</p>
+      <img src={expandIcon} alt="drag handle" />
+    </div>
   );
 }

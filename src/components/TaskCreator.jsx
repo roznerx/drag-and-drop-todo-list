@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import "./TaskCreator.css";
 
-export default function TaskCreator({ handleAddTask  }) {
+export default function TaskCreator({ handleAddTask }) {
   const [name, setName] = useState("");
 
   return (

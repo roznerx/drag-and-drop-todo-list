@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react';
 import { DndContext } from '@dnd-kit/core';
 import TaskColumn from './TaskColumn';
-import { useEffect, useState } from 'react';
 import AddTask from './TaskCreator';
-import "./ToDoList.css";
 import TaskTrash from './TaskTrash';
+import "./ToDoList.css";
 
 const ToDoList = ({ todos }) => {
   const [tasks, setTasks] = useState({
@@ -29,7 +29,6 @@ const ToDoList = ({ todos }) => {
     const updated = {};
 
     for (const [status, arr] of Object.entries(tasks)) {
-      console.log(updated[status])
       updated[status] = arr.filter(task => task.id !== id);
     }
 

@@ -1,6 +1,6 @@
 import { useDraggable } from '@dnd-kit/core';
-import "./Task.css";
 import expandIcon from '../assets/expand-icon.png';
+import "./Task.css";
 
 export default function Task({ id, text }) {
   const { 
